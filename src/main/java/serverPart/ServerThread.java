@@ -2,6 +2,7 @@ package serverPart;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 
 public class ServerThread extends Thread{
@@ -28,15 +29,17 @@ public class ServerThread extends Thread{
             while (isAlive) {
                 try {
                     String line = br.readLine();
-                    if (line != null) {
+                    if (line != null && !line.equals("")) {
                         RequestFromCl request = new RequestFromCl(line);
-                        System.out.println(request);
                         new RequestHandler(socket, request, order).start();
                     }
+                } catch (SocketTimeoutException ignored) {
                 } catch (IOException e) {
+                    e.printStackTrace();
                     isAlive = false;
                 }
             }
+            System.out.println("END");
         } catch (IOException e) {
             e.printStackTrace();
         }

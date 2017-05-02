@@ -1,6 +1,6 @@
 package serverPart;
 
-import java.io.PrintWriter;
+import java.io.OutputStream;
 import java.net.Socket;
 
 public class RequestHandler extends Thread{
@@ -20,16 +20,16 @@ public class RequestHandler extends Thread{
 
     @Override
     public void run() {
-        if (request.getCode().equals("get")) {
+        if ("get".equals(request.getCode())) {
             String columns = request.getField();
             response = new ResponseToCl(
-                    dbHandler.getResponse("Select " + columns + " from animals;", columns));
+                    dbHandler.getResponse("Select " + columns + " from Films;", columns));
             System.out.println(response.toString());
-            try (PrintWriter writer = new PrintWriter(socket.getOutputStream())){
-                writer.write(response.toString());
+            try (OutputStream writer = socket.getOutputStream()) {
+                writer.write((response.toString() + "\n").getBytes());
                 writer.flush();
-            }catch (Exception ex) {}
-        } else if (request.getCode().equals("send")) {
+            } catch (Exception ex) {}
+        } else if ("send".equals(request.getCode())) {
             String field = request.getField();
             String value = request.getBody();
             order.setField(field, value);

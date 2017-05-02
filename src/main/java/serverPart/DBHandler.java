@@ -5,7 +5,7 @@ import com.mysql.fabric.jdbc.FabricMySQLDriver;
 import java.sql.*;
 
 public class DBHandler {
-    private static final String url = "jdbc:mysql://localhost:3306/animals";
+    private static final String url = "jdbc:mysql://localhost:3306/orders";
     private static final String login = "lisa";
     private static final String pass = "mentalist";
     private Connection connection;
@@ -29,8 +29,7 @@ public class DBHandler {
         Statement statement;
         try {
             statement = connection.createStatement();
-            String query = reqLine;
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet rs = statement.executeQuery(reqLine);
             while (rs.next()) {
                 result += rs.getString(columns);
                 result += '/';
