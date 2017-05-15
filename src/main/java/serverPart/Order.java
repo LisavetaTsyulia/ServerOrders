@@ -1,30 +1,26 @@
 package serverPart;
 
-import java.sql.Time;
-import java.text.DateFormat;
-import java.util.Date;
-
 public class Order {
-    private String filmName;
-    private String cinema;
+    private int filmID;
+    private int cinemaID;
     private String date;
     private String time;
-    private int code;
+    private String seat;
 
-    public String getFilmName() {
-        return filmName;
+    public int getFilmName() {
+        return filmID;
     }
 
-    public void setFilmName(String filmName) {
-        this.filmName = filmName;
+    public void setFilmName(int filmName) {
+        this.filmID = filmName;
     }
 
-    public String getCinema() {
-        return cinema;
+    public int getCinema() {
+        return cinemaID;
     }
 
-    public void setCinema(String cinema) {
-        this.cinema = cinema;
+    public void setCinema(int cinema) {
+        this.cinemaID = cinema;
     }
 
     public String  getDate() {
@@ -43,21 +39,21 @@ public class Order {
         this.time = time;
     }
 
-    public int getCode() {
-        return code;
+    public String getSeat() {
+        return seat;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setSeat(String code) {
+        this.seat = code;
     }
 
     public void setField(String field, String value) {
         switch (field) {
-            case "cinema": setCinema(value); break;
-            case "filmName": setFilmName(value); break;
+            case "cinemaID": setCinema(Integer.parseInt(value)); break;
+            case "filmID": setFilmName(Integer.parseInt(value)); break;
             case "date": setDate(value);break;
             case "time": setTime(value);break;
-            case "code": setCode(Integer.parseInt(value));break;
+            case "code": setSeat(value);break;
         }
     }
 }

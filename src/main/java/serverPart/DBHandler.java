@@ -27,12 +27,16 @@ public class DBHandler {
     public String getResponse(String reqLine, String columns) {
         String result = "";
         Statement statement;
+        String[] parts = columns.split("/");
         try {
             statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(reqLine);
+                    ResultSet rs = statement.executeQuery(reqLine);
             while (rs.next()) {
-                result += rs.getString(columns);
-                result += '/';
+                for (String col:
+                     parts) {
+                    result += rs.getString(col);
+                    result += ';';
+                }
             }
             statement.close();
         } catch (SQLException e) {

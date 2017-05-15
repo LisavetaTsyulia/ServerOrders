@@ -1,17 +1,16 @@
 package serverPart;
 
 import java.io.OutputStream;
-import java.net.Socket;
 
 public class RequestHandler extends Thread{
-    private Socket socket;
+    private OutputStream outputStream;
     private RequestFromCl request;
     private ResponseToCl response;
     private DBHandler dbHandler;
     private Order order;
 
-    public RequestHandler(Socket socket, RequestFromCl request, Order order) {
-        this.socket = socket;
+    public RequestHandler(OutputStream outputStream, RequestFromCl request, Order order) {
+        this.outputStream = outputStream;
         this.request = request;
         this.order = order;
         dbHandler = new DBHandler();
@@ -21,13 +20,12 @@ public class RequestHandler extends Thread{
     @Override
     public void run() {
         if ("get".equals(request.getCode())) {
-            String columns = request.getField();
             response = new ResponseToCl(
-                    dbHandler.getResponse("Select " + columns + " from Films;", columns));
+                    dbHandler.getResponse(request.getBody(), request.getField()));
             System.out.println(response.toString());
-            try (OutputStream writer = socket.getOutputStream()) {
-                writer.write((response.toString() + "\n").getBytes());
-                writer.flush();
+            try {
+                outputStream.write((response.toString() + "\n").getBytes());
+                outputStream.flush();
             } catch (Exception ex) {}
         } else if ("send".equals(request.getCode())) {
             String field = request.getField();

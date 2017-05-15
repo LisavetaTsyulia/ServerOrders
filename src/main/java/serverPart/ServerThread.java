@@ -25,13 +25,14 @@ public class ServerThread extends Thread{
     @Override
     public void run() {
         order = new Order();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+             OutputStream os = socket.getOutputStream()) {
             while (isAlive) {
                 try {
                     String line = br.readLine();
                     if (line != null && !line.equals("")) {
                         RequestFromCl request = new RequestFromCl(line);
-                        new RequestHandler(socket, request, order).start();
+                        new RequestHandler(os, request, order).start();
                     }
                 } catch (SocketTimeoutException ignored) {
                 } catch (IOException e) {
