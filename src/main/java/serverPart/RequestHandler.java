@@ -7,12 +7,10 @@ public class RequestHandler extends Thread{
     private RequestFromCl request;
     private ResponseToCl response;
     private DBHandler dbHandler;
-    private Order order;
 
-    public RequestHandler(OutputStream outputStream, RequestFromCl request, Order order) {
+    public RequestHandler(OutputStream outputStream, RequestFromCl request) {
         this.outputStream = outputStream;
         this.request = request;
-        this.order = order;
         dbHandler = new DBHandler();
         dbHandler.setConnection();
     }
@@ -28,9 +26,7 @@ public class RequestHandler extends Thread{
                 outputStream.flush();
             } catch (Exception ex) {}
         } else if ("send".equals(request.getCode())) {
-            String field = request.getField();
-            String value = request.getBody();
-            order.setField(field, value);
+            dbHandler.updateDB(request.getBody());
             System.out.println(request.toString());
         }
     }

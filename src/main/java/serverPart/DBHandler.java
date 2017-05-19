@@ -42,10 +42,21 @@ public class DBHandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result;
+        return result += ';';
     }
 
-    @Override
+    public void updateDB(String reqLine) {
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate(reqLine);
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+        @Override
     protected void finalize() throws Throwable {
         super.finalize();
         connection.close();

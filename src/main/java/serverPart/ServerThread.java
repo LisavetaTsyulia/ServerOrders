@@ -9,7 +9,6 @@ public class ServerThread extends Thread{
     private Socket socket;
     private InputStream inputStream;
     private boolean isAlive;
-    private Order order;
 
     public ServerThread(Socket socket) {
         try {
@@ -24,7 +23,6 @@ public class ServerThread extends Thread{
 
     @Override
     public void run() {
-        order = new Order();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
              OutputStream os = socket.getOutputStream()) {
             while (isAlive) {
@@ -32,7 +30,7 @@ public class ServerThread extends Thread{
                     String line = br.readLine();
                     if (line != null && !line.equals("")) {
                         RequestFromCl request = new RequestFromCl(line);
-                        new RequestHandler(os, request, order).start();
+                        new RequestHandler(os, request).start();
                     }
                 } catch (SocketTimeoutException ignored) {
                 } catch (IOException e) {
