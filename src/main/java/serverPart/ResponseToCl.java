@@ -10,4 +10,8 @@ public class ResponseToCl {
     public String toString() {
         return respFromDB;
     }
+
+    public void setRespFromDB(String respFromDB) {
+        this.respFromDB = respFromDB;
+    }
 }

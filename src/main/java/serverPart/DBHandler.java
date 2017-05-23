@@ -45,7 +45,7 @@ public class DBHandler {
         return result += ';';
     }
 
-    public void updateDB(String reqLine) {
+    public synchronized void updateDB(String reqLine) {
         Statement statement;
         try {
             statement = connection.createStatement();
